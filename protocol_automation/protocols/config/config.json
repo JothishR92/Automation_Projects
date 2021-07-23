@@ -1,0 +1,22 @@
+{
+	"package_1":"samba",
+	"package_2":"samba-common",
+	"package_3":"python-glade2",
+	"package_4":"system-config-samba",
+	"nfs_serv_package":"nfs-kernel-server",
+	"nfs_cli_package":"nfs-common",
+	"nfs_conf":"/etc/exports",
+	"client_pack":"cifs-utils",
+	"dir_path":"/backups/",
+	"config_file":"/etc/samba/smb.conf",
+	"public":"/common/public/",
+	"private":"/common/private/",
+	"ro":"/common/Readonly",
+	"dir":"/mnt/my_dir"
+
+
+}
+
+
+
+

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot rpa="false" generated="20190305 16:01:12.004" generator="Robot 3.1.1 (Python 2.7.15rc1 on linux2)">
+<suite source="/home/eeshwar/protocol_automation/protocols/cifs/client/protocol_clients.robot" id="s1" name="Protocol Clients">
+<kw type="setup" name="Open Connection And Log In">
+<kw name="Open Connection" library="SSHLibrary">
+<doc>Opens a new SSH connection to the given ``host`` and ``port``.</doc>
+<arguments>
+<arg>${CLIENT_IP}</arg>
+</arguments>
+<status status="PASS" endtime="20190305 16:01:12.107" starttime="20190305 16:01:12.107"></status>
+</kw>
+<kw name="Login" library="SSHLibrary">
+<doc>Logs into the SSH server with the given ``username`` and ``password``.</doc>
+<arguments>
+<arg>${CLIENT_NAME}</arg>
+<arg>${CLIENT_PWD}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:12.108" level="FAIL">Variable '${CLIENT_PWD}' not found. Did you mean:
+    ${CLIENT_IP}
+    ${CLIENT_PASSWORD}</msg>
+<status status="FAIL" endtime="20190305 16:01:12.108" starttime="20190305 16:01:12.107"></status>
+</kw>
+<status status="FAIL" endtime="20190305 16:01:12.109" starttime="20190305 16:01:12.106"></status>
+</kw>
+<test id="s1-t1" name="01_Install client package">
+<doc>Client Package Installation</doc>
+<status status="FAIL" endtime="20190305 16:01:12.109" critical="yes" starttime="20190305 16:01:12.109">Parent suite setup failed:
+Variable '${CLIENT_PWD}' not found. Did you mean:
+    ${CLIENT_IP}
+    ${CLIENT_PASSWORD}</status>
+</test>
+<test id="s1-t2" name="02_Mounting Directory">
+<doc>Mounting Directory to server Directory</doc>
+<status status="FAIL" endtime="20190305 16:01:12.110" critical="yes" starttime="20190305 16:01:12.110">Parent suite setup failed:
+Variable '${CLIENT_PWD}' not found. Did you mean:
+    ${CLIENT_IP}
+    ${CLIENT_PASSWORD}</status>
+</test>
+<kw type="teardown" name="Close All Connections" library="SSHLibrary">
+<doc>Closes all open connections.</doc>
+<status status="PASS" endtime="20190305 16:01:12.111" starttime="20190305 16:01:12.110"></status>
+</kw>
+<status status="FAIL" endtime="20190305 16:01:12.111" starttime="20190305 16:01:12.006">Suite setup failed:
+Variable '${CLIENT_PWD}' not found. Did you mean:
+    ${CLIENT_IP}
+    ${CLIENT_PASSWORD}</status>
+</suite>
+<statistics>
+<total>
+<stat fail="2" pass="0">Critical Tests</stat>
+<stat fail="2" pass="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="2" id="s1" name="Protocol Clients" pass="0">Protocol Clients</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

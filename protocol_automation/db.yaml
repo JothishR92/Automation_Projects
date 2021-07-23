@@ -1,0 +1,7 @@
+SERVER_IP      : 10.132.243.137 
+SERVER_NAME    : 'root'
+SERVER_PASSWORD: 'root'
+CLIENT_IP       : 10.132.243.132
+CLIENT_NAME     : 'root'
+CLIENT_PASSWORD : 'root'
+PROTOCOL_NAME   : 'nfs'

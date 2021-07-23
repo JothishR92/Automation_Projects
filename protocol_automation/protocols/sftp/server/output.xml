@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot rpa="false" generated="20190221 14:42:07.496" generator="Robot 3.1.1 (Python 2.7.15rc1 on linux2)">
+<suite source="/home/ganesh/saranya/protocol_automation/protocols/sftp/client/protocol_clients.robot" id="s1" name="Protocol Clients">
+<kw type="setup" name="Open Connection And Log In">
+<kw name="Get Environment Variable" library="OperatingSystem">
+<doc>Returns the value of an environment variable with the given name.</doc>
+<arguments>
+<arg>CLIENT_IP</arg>
+</arguments>
+<assign>
+<var>${ip}</var>
+</assign>
+<msg timestamp="20190221 14:42:07.642" level="INFO">${ip} = 10.132.243.130</msg>
+<status status="PASS" endtime="20190221 14:42:07.642" starttime="20190221 14:42:07.640"></status>
+</kw>
+<kw name="Get Environment Variable" library="OperatingSystem">
+<doc>Returns the value of an environment variable with the given name.</doc>
+<arguments>
+<arg>CLIENT_NAME</arg>
+</arguments>
+<assign>
+<var>${name}</var>
+</assign>
+<msg timestamp="20190221 14:42:07.643" level="INFO">${name} = root</msg>
+<status status="PASS" endtime="20190221 14:42:07.643" starttime="20190221 14:42:07.643"></status>
+</kw>
+<kw name="Get Environment Variable" library="OperatingSystem">
+<doc>Returns the value of an environment variable with the given name.</doc>
+<arguments>
+<arg>CLIENT_PWD</arg>
+</arguments>
+<assign>
+<var>${pwd}</var>
+</assign>
+<msg timestamp="20190221 14:42:07.644" level="INFO">${pwd} = root</msg>
+<status status="PASS" endtime="20190221 14:42:07.644" starttime="20190221 14:42:07.643"></status>
+</kw>
+<kw name="Open Connection" library="SSHLibrary">
+<doc>Opens a new SSH connection to the given ``host`` and ``port``.</doc>
+<arguments>
+<arg>${ip}</arg>
+</arguments>
+<status status="PASS" endtime="20190221 14:42:07.645" starttime="20190221 14:42:07.644"></status>
+</kw>
+<kw name="Login" library="SSHLibrary">
+<doc>Logs into the SSH server with the given ``username`` and ``password``.</doc>
+<arguments>
+<arg>${name}</arg>
+<arg>${pwd}</arg>
+</arguments>
+<msg timestamp="20190221 14:42:07.645" level="INFO">Logging into '10.132.243.130:22' as 'root'.</msg>
+<msg timestamp="20190221 14:42:09.211" level="INFO">Read output: Welcome to Ubuntu 18.04.2 LTS (GNU/Linux 4.15.0-20-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+ * 'snap info' now shows the freshness of each channel.
+   Try 'snap info microk8s' for all the latest goodness.
+
+
+ * Canonical Livepatch is available for installation.
+   - Reduce system reboots and improve kernel security. Activate at:
+     https://ubuntu.com/livepatch
+
+29 packages can be updated.
+22 updates are security updates.
+
+*** System restart required ***
+Last login: Thu Feb 21 14:20:59 2019 from 10.132.242.64
+root@client-virtual-machine:~#</msg>
+<status status="PASS" endtime="20190221 14:42:09.212" starttime="20190221 14:42:07.645"></status>
+</kw>
+<status status="PASS" endtime="20190221 14:42:09.212" starttime="20190221 14:42:07.640"></status>
+</kw>
+<test id="s1-t1" name="01_Install client package">
+<kw name="Packages">
+<assign>
+<var>${pack}</var>
+</assign>
+<kw name="Get File" library="OperatingSystem">
+<doc>Returns the contents of a specified file.</doc>
+<arguments>
+<arg>/home/ganesh/saranya/protocol_automation/protocols/sftp/client/../../config/config.json</arg>
+</arguments>
+<assign>
+<var>${json}</var>
+</assign>
+<msg timestamp="20190221 14:42:09.215" html="yes" level="INFO">Getting file '&lt;a href="file:///home/ganesh/saranya/protocol_automation/protocols/config/config.json"&gt;/home/ganesh/saranya/protocol_automation/protocols/config/config.json&lt;/a&gt;'.</msg>
+<msg timestamp="20190221 14:42:09.215" level="INFO">${json} = {
+	"package_1":"samba",
+	"package_2":"samba-common",
+	"package_3":"python-glade2",
+	"package_4":"system-config-samba",
+	"client_pack":"cifs-utils",
+	"dir_path":"/backups/",
+	"config_file":"/etc/samba/...</msg>
+<status status="PASS" endtime="20190221 14:42:09.215" starttime="20190221 14:42:09.214"></status>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>json.loads('''${json}''')</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${obj}</var>
+</assign>
+<msg timestamp="20190221 14:42:09.219" level="INFO">${obj} = {u'package_4': u'system-config-samba', u'SFTP_ServerPackage': u'ssh', u'config_file': u'/etc/samba/smb.conf', u'package_1': u'samba', u'package_2': u'samba-common', u'package_3': u'python-glade2', u'p...</msg>
+<status status="PASS" endtime="20190221 14:42:09.219" starttime="20190221 14:42:09.215"></status>
+</kw>
+<msg timestamp="20190221 14:42:09.220" level="INFO">${pack} = {u'package_4': u'system-config-samba', u'SFTP_ServerPackage': u'ssh', u'config_file': u'/etc/samba/smb.conf', u'package_1': u'samba', u'package_2': u'samba-common', u'package_3': u'python-glade2', u'p...</msg>
+<status status="PASS" endtime="20190221 14:42:09.220" starttime="20190221 14:42:09.213"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>apt install ${pack["SFTP_ClientPackage"]}</arg>
+</arguments>
+<assign>
+<var>${client}</var>
+</assign>
+<msg timestamp="20190221 14:42:09.221" level="INFO">Executing command 'apt install ssh'.</msg>
+<msg timestamp="20190221 14:42:10.115" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20190221 14:42:10.115" level="INFO">${client} = Reading package lists...
+Building dependency tree...
+Reading state information...
+ssh is already the newest version (1:7.6p1-4ubuntu0.2).
+0 upgraded, 0 newly installed, 0 to remove and 16 not upgraded...</msg>
+<status status="PASS" endtime="20190221 14:42:10.115" starttime="20190221 14:42:09.220"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${client}</arg>
+</arguments>
+<msg timestamp="20190221 14:42:10.116" level="INFO">Reading package lists...
+Building dependency tree...
+Reading state information...
+ssh is already the newest version (1:7.6p1-4ubuntu0.2).
+0 upgraded, 0 newly installed, 0 to remove and 16 not upgraded.</msg>
+<status status="PASS" endtime="20190221 14:42:10.116" starttime="20190221 14:42:10.116"></status>
+</kw>
+<doc>Client Package Installation</doc>
+<status status="PASS" endtime="20190221 14:42:10.116" critical="yes" starttime="20190221 14:42:09.212"></status>
+</test>
+<test id="s1-t2" name="02_SFTP file upload">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>mkdir SFTPFileTransfer</arg>
+</arguments>
+<msg timestamp="20190221 14:42:10.118" level="INFO">Executing command 'mkdir SFTPFileTransfer'.</msg>
+<msg timestamp="20190221 14:42:10.194" level="INFO">Command exited with return code 1.</msg>
+<status status="PASS" endtime="20190221 14:42:10.195" starttime="20190221 14:42:10.118"></status>
+</kw>
+<kw name="Get Environment Variable" library="OperatingSystem">
+<doc>Returns the value of an environment variable with the given name.</doc>
+<arguments>
+<arg>SERVER_IP</arg>
+</arguments>
+<assign>
+<var>${server}</var>
+</assign>
+<msg timestamp="20190221 14:42:10.195" level="INFO">${server} = 10.132.243.132</msg>
+<status status="PASS" endtime="20190221 14:42:10.195" starttime="20190221 14:42:10.195"></status>
+</kw>
+<kw name="Write" library="SSHLibrary">
+<doc>Writes the given ``text`` on the remote machine and appends a newline.</doc>
+<arguments>
+<arg>sftp sftp@${server}</arg>
+</arguments>
+<msg timestamp="20190221 14:42:10.235" level="INFO">sftp sftp@10.132.243.132</msg>
+<status status="PASS" endtime="20190221 14:42:10.235" starttime="20190221 14:42:10.196"></status>
+</kw>
+<kw name="Set Client Configuration" library="SSHLibrary">
+<doc>Update the `configuration` of the current connection.</doc>
+<arguments>
+<arg>prompt=sftp@${server}'s password:</arg>
+</arguments>
+<status status="PASS" endtime="20190221 14:42:10.236" starttime="20190221 14:42:10.235"></status>
+</kw>
+<kw name="Read Until Prompt" library="SSHLibrary">
+<doc>Consumes and returns the server output until the prompt is found.</doc>
+<assign>
+<var>${output}</var>
+</assign>
+<msg timestamp="20190221 14:42:10.313" level="INFO">sftp@10.132.243.132's password:</msg>
+<msg timestamp="20190221 14:42:10.313" level="INFO">${output} = sftp@10.132.243.132's password:</msg>
+<status status="PASS" endtime="20190221 14:42:10.313" starttime="20190221 14:42:10.236"></status>
+</kw>
+<kw name="Should End With" library="BuiltIn">
+<doc>Fails if the string ``str1`` does not end with the string ``str2``.</doc>
+<arguments>
+<arg>${output}</arg>
+<arg>sftp@${server}'s password:</arg>
+</arguments>
+<status status="PASS" endtime="20190221 14:42:10.314" starttime="20190221 14:42:10.313"></status>
+</kw>
+<kw name="Write" library="SSHLibrary">
+<doc>Writes the given ``text`` on the remote machine and appends a newline.</doc>
+<arguments>
+<arg>sftp</arg>
+</arguments>
+<status status="PASS" endtime="20190221 14:42:10.316" starttime="20190221 14:42:10.314"></status>
+</kw>
+<kw name="Set Client Configuration" library="SSHLibrary">
+<doc>Update the `configuration` of the current connection.</doc>
+<arguments>
+<arg>prompt=sftp&gt;</arg>
+</arguments>
+<status status="PASS" endtime="20190221 14:42:10.316" starttime="20190221 14:42:10.316"></status>
+</kw>
+<kw name="Read Until Prompt" library="SSHLibrary">
+<doc>Consumes and returns the server output until the prompt is found.</doc>
+<assign>
+<var>${output}</var>
+</assign>
+<msg timestamp="20190221 14:42:10.946" level="INFO">Connected to 10.132.243.132.
+sftp&gt;</msg>
+<msg timestamp="20190221 14:42:10.947" level="INFO">${output} = Connected to 10.132.243.132.
+sftp&gt;</msg>
+<status status="PASS" endtime="20190221 14:42:10.947" starttime="20190221 14:42:10.316"></status>
+</kw>
+<kw name="Should End With" library="BuiltIn">
+<doc>Fails if the string ``str1`` does not end with the string ``str2``.</doc>
+<arguments>
+<arg>${output}</arg>
+<arg>sftp&gt;</arg>
+</arguments>
+<status status="PASS" endtime="20190221 14:42:10.948" starttime="20190221 14:42:10.947"></status>
+</kw>
+<kw name="Write" library="SSHLibrary">
+<doc>Writes the given ``text`` on the remote machine and appends a newline.</doc>
+<arguments>
+<arg>cd /private</arg>
+</arguments>
+<msg timestamp="20190221 14:42:10.951" level="INFO">cd /private</msg>
+<status status="PASS" endtime="20190221 14:42:10.951" starttime="20190221 14:42:10.948"></status>
+</kw>
+<kw name="Set Client Configuration" library="SSHLibrary">
+<doc>Update the `configuration` of the current connection.</doc>
+<arguments>
+<arg>prompt=sftp&gt;</arg>
+</arguments>
+<status status="PASS" endtime="20190221 14:42:10.952" starttime="20190221 14:42:10.951"></status>
+</kw>
+<kw name="Read Until Prompt" library="SSHLibrary">
+<doc>Consumes and returns the server output until the prompt is found.</doc>
+<assign>
+<var>${output}</var>
+</assign>
+<msg timestamp="20190221 14:42:10.952" level="INFO">sftp&gt;</msg>
+<msg timestamp="20190221 14:42:10.952" level="INFO">${output} = sftp&gt;</msg>
+<status status="PASS" endtime="20190221 14:42:10.953" starttime="20190221 14:42:10.952"></status>
+</kw>
+<kw name="Should End With" library="BuiltIn">
+<doc>Fails if the string ``str1`` does not end with the string ``str2``.</doc>
+<arguments>
+<arg>${output}</arg>
+<arg>sftp&gt;</arg>
+</arguments>
+<status status="PASS" endtime="20190221 14:42:10.953" starttime="20190221 14:42:10.953"></status>
+</kw>
+<kw name="Write" library="SSHLibrary">
+<doc>Writes the given ``text`` on the remote machine and appends a newline.</doc>
+<arguments>
+<arg>put testing.txt</arg>
+</arguments>
+<msg timestamp="20190221 14:42:10.956" level="INFO">put testing.txt</msg>
+<status status="PASS" endtime="20190221 14:42:10.956" starttime="20190221 14:42:10.953"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>SFTP put successful</arg>
+</arguments>
+<msg timestamp="20190221 14:42:10.957" level="INFO">SFTP put successful</msg>
+<status status="PASS" endtime="20190221 14:42:10.957" starttime="20190221 14:42:10.957"></status>
+</kw>
+<doc>Upload file using SFTP protocol</doc>
+<status status="PASS" endtime="20190221 14:42:10.957" critical="yes" starttime="20190221 14:42:10.117"></status>
+</test>
+<kw type="teardown" name="Close All Connections" library="SSHLibrary">
+<doc>Closes all open connections.</doc>
+<status status="PASS" endtime="20190221 14:42:11.073" starttime="20190221 14:42:10.958"></status>
+</kw>
+<status status="PASS" endtime="20190221 14:42:11.073" starttime="20190221 14:42:07.498"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="0" pass="2">Critical Tests</stat>
+<stat fail="0" pass="2">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="0" id="s1" name="Protocol Clients" pass="2">Protocol Clients</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

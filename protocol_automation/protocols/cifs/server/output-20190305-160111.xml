@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot rpa="false" generated="20190305 16:01:11.194" generator="Robot 3.1.1 (Python 2.7.15rc1 on linux2)">
+<suite source="/home/eeshwar/protocol_automation/protocols/common/shares.robot" id="s1" name="Shares">
+<kw type="setup" name="Open Connection And Log In">
+<kw name="Open Connection" library="SSHLibrary">
+<doc>Opens a new SSH connection to the given ``host`` and ``port``.</doc>
+<arguments>
+<arg>${SERVER_IP}</arg>
+</arguments>
+<status status="PASS" endtime="20190305 16:01:11.338" starttime="20190305 16:01:11.337"></status>
+</kw>
+<kw name="Login" library="SSHLibrary">
+<doc>Logs into the SSH server with the given ``username`` and ``password``.</doc>
+<arguments>
+<arg>${SERVER_NAME}</arg>
+<arg>${SERVER_PWD}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:11.340" level="FAIL">Variable '${SERVER_PWD}' not found. Did you mean:
+    ${SERVER_IP}
+    ${SERVER_PASSWORD}</msg>
+<status status="FAIL" endtime="20190305 16:01:11.340" starttime="20190305 16:01:11.338"></status>
+</kw>
+<status status="FAIL" endtime="20190305 16:01:11.340" starttime="20190305 16:01:11.337"></status>
+</kw>
+<test id="s1-t1" name="cifs_share_private">
+<doc>Creating Private Share</doc>
+<status status="FAIL" endtime="20190305 16:01:11.341" critical="yes" starttime="20190305 16:01:11.340">Parent suite setup failed:
+Variable '${SERVER_PWD}' not found. Did you mean:
+    ${SERVER_IP}
+    ${SERVER_PASSWORD}</status>
+</test>
+<test id="s1-t2" name="cifs_share_public">
+<doc>Creating Public Share</doc>
+<status status="FAIL" endtime="20190305 16:01:11.342" critical="yes" starttime="20190305 16:01:11.341">Parent suite setup failed:
+Variable '${SERVER_PWD}' not found. Did you mean:
+    ${SERVER_IP}
+    ${SERVER_PASSWORD}</status>
+</test>
+<test id="s1-t3" name="cifs_share_readonly">
+<doc>Creating Ro Share</doc>
+<status status="FAIL" endtime="20190305 16:01:11.342" critical="yes" starttime="20190305 16:01:11.342">Parent suite setup failed:
+Variable '${SERVER_PWD}' not found. Did you mean:
+    ${SERVER_IP}
+    ${SERVER_PASSWORD}</status>
+</test>
+<kw type="teardown" name="Close All Connections" library="SSHLibrary">
+<doc>Closes all open connections.</doc>
+<status status="PASS" endtime="20190305 16:01:11.343" starttime="20190305 16:01:11.343"></status>
+</kw>
+<status status="FAIL" endtime="20190305 16:01:11.343" starttime="20190305 16:01:11.196">Suite setup failed:
+Variable '${SERVER_PWD}' not found. Did you mean:
+    ${SERVER_IP}
+    ${SERVER_PASSWORD}</status>
+</suite>
+<statistics>
+<total>
+<stat fail="3" pass="0">Critical Tests</stat>
+<stat fail="3" pass="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="3" id="s1" name="Shares" pass="0">Shares</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

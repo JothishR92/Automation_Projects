@@ -1,0 +1,933 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot rpa="false" generated="20190305 16:01:04.237" generator="Robot 3.1.1 (Python 2.7.15rc1 on linux2)">
+<suite source="/home/eeshwar/protocol_automation/protocols/cifs/server/protocol_servers.robot" id="s1" name="Protocol Servers">
+<kw type="setup" name="Open Connection And Log In">
+<kw name="Open Connection" library="SSHLibrary">
+<doc>Opens a new SSH connection to the given ``host`` and ``port``.</doc>
+<arguments>
+<arg>${SERVER_IP}</arg>
+</arguments>
+<status status="PASS" endtime="20190305 16:01:04.349" starttime="20190305 16:01:04.349"></status>
+</kw>
+<kw name="Login" library="SSHLibrary">
+<doc>Logs into the SSH server with the given ``username`` and ``password``.</doc>
+<arguments>
+<arg>${SERVER_NAME}</arg>
+<arg>${SERVER_PASSWORD}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:04.350" level="INFO">Logging into '10.132.243.137:22' as 'root'.</msg>
+<msg timestamp="20190305 16:01:06.481" level="INFO">Read output: Welcome to Ubuntu 18.04 LTS (GNU/Linux 4.15.0-20-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+
+ * Canonical Livepatch is available for installation.
+   - Reduce system reboots and improve kernel security. Activate at:
+     https://ubuntu.com/livepatch
+
+363 packages can be updated.
+45 updates are security updates.
+
+*** System restart required ***
+Last login: Tue Mar  5 18:42:36 2019 from 10.132.242.155
+root@test-virtual-machine:~#</msg>
+<status status="PASS" endtime="20190305 16:01:06.481" starttime="20190305 16:01:04.350"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:06.481" starttime="20190305 16:01:04.348"></status>
+</kw>
+<test id="s1-t1" name="01_Install Pcakages">
+<kw name="Packages">
+<assign>
+<var>${pack}</var>
+</assign>
+<kw name="Get File" library="OperatingSystem">
+<doc>Returns the contents of a specified file.</doc>
+<arguments>
+<arg>/home/eeshwar/protocol_automation/protocols/cifs/server/../../config/config.json</arg>
+</arguments>
+<assign>
+<var>${json}</var>
+</assign>
+<msg timestamp="20190305 16:01:06.485" html="yes" level="INFO">Getting file '&lt;a href="file:///home/eeshwar/protocol_automation/protocols/config/config.json"&gt;/home/eeshwar/protocol_automation/protocols/config/config.json&lt;/a&gt;'.</msg>
+<msg timestamp="20190305 16:01:06.507" level="INFO">${json} = {
+	"package_1":"samba",
+	"package_2":"samba-common",
+	"package_3":"python-glade2",
+	"package_4":"system-config-samba",
+	"nfs_serv_package":"nfs-kernel-server",
+	"nfs_cli_package":"nfs-common",
+	"nfs_c...</msg>
+<status status="PASS" endtime="20190305 16:01:06.507" starttime="20190305 16:01:06.484"></status>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>json.loads('''${json}''')</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${obj}</var>
+</assign>
+<msg timestamp="20190305 16:01:06.539" level="INFO">${obj} = {u'package_4': u'system-config-samba', u'config_file': u'/etc/samba/smb.conf', u'package_1': u'samba', u'package_2': u'samba-common', u'package_3': u'python-glade2', u'nfs_serv_package': u'nfs-kernel-...</msg>
+<status status="PASS" endtime="20190305 16:01:06.539" starttime="20190305 16:01:06.508"></status>
+</kw>
+<kw name="Create List" library="BuiltIn">
+<doc>Returns a list containing given items.</doc>
+<arguments>
+<arg>${obj["package_1"]}</arg>
+<arg>${obj["package_2"]}</arg>
+<arg>${obj["package_3"]}</arg>
+<arg>${obj["package_4"]}</arg>
+</arguments>
+<assign>
+<var>${list}</var>
+</assign>
+<msg timestamp="20190305 16:01:06.541" level="INFO">${list} = [u'samba', u'samba-common', u'python-glade2', u'system-config-samba']</msg>
+<status status="PASS" endtime="20190305 16:01:06.541" starttime="20190305 16:01:06.539"></status>
+</kw>
+<kw name="Convert To String" library="BuiltIn">
+<doc>Converts the given item to a Unicode string.</doc>
+<arguments>
+<arg>${list}</arg>
+</arguments>
+<assign>
+<var>${pack}</var>
+</assign>
+<msg timestamp="20190305 16:01:06.542" level="INFO">${pack} = [u'samba', u'samba-common', u'python-glade2', u'system-config-samba']</msg>
+<status status="PASS" endtime="20190305 16:01:06.542" starttime="20190305 16:01:06.541"></status>
+</kw>
+<kw name="Remove String" library="String">
+<doc>Removes all ``removables`` from the given ``string``.</doc>
+<arguments>
+<arg>${pack}</arg>
+<arg>u</arg>
+<arg>'</arg>
+<arg>,</arg>
+<arg>[</arg>
+<arg>]</arg>
+</arguments>
+<assign>
+<var>${smb_Pack}</var>
+</assign>
+<msg timestamp="20190305 16:01:06.543" level="INFO">${smb_Pack} = samba samba-common python-glade2 system-config-samba</msg>
+<status status="PASS" endtime="20190305 16:01:06.543" starttime="20190305 16:01:06.543"></status>
+</kw>
+<msg timestamp="20190305 16:01:06.544" level="INFO">${pack} = samba samba-common python-glade2 system-config-samba</msg>
+<status status="PASS" endtime="20190305 16:01:06.544" starttime="20190305 16:01:06.483"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>apt install -y ${pack}</arg>
+<arg>sudo=true</arg>
+<arg>sudo_password=root</arg>
+</arguments>
+<assign>
+<var>${package}</var>
+</assign>
+<msg timestamp="20190305 16:01:06.546" level="INFO">Executing command 'sudo apt install -y samba samba-common python-glade2 system-config-samba'.</msg>
+<msg timestamp="20190305 16:01:07.598" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20190305 16:01:07.599" level="INFO">${package} = Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building ...</msg>
+<status status="PASS" endtime="20190305 16:01:07.599" starttime="20190305 16:01:06.545"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${package}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:07.601" level="INFO">Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+Reading state information... 0%Reading state information... 2%Reading state information... Done
+python-glade2 is already the newest version (2.24.0-5.1ubuntu2).
+system-config-samba is already the newest version (1.2.63-0ubuntu6).
+samba is already the newest version (2:4.7.6+dfsg~ubuntu-0ubuntu2.6).
+samba-common is already the newest version (2:4.7.6+dfsg~ubuntu-0ubuntu2.6).
+0 upgraded, 0 newly installed, 0 to remove and 360 not upgraded.</msg>
+<status status="PASS" endtime="20190305 16:01:07.601" starttime="20190305 16:01:07.600"></status>
+</kw>
+<doc>Install samba PackagesI</doc>
+<status status="PASS" endtime="20190305 16:01:07.601" critical="yes" starttime="20190305 16:01:06.482"></status>
+</test>
+<test id="s1-t2" name="02_Edit Config File">
+<kw name="Json_file">
+<assign>
+<var>${file}</var>
+</assign>
+<kw name="Get File" library="OperatingSystem">
+<doc>Returns the contents of a specified file.</doc>
+<arguments>
+<arg>/home/eeshwar/protocol_automation/protocols/cifs/server/../../config/config.json</arg>
+</arguments>
+<assign>
+<var>${json}</var>
+</assign>
+<msg timestamp="20190305 16:01:07.606" html="yes" level="INFO">Getting file '&lt;a href="file:///home/eeshwar/protocol_automation/protocols/config/config.json"&gt;/home/eeshwar/protocol_automation/protocols/config/config.json&lt;/a&gt;'.</msg>
+<msg timestamp="20190305 16:01:07.607" level="INFO">${json} = {
+	"package_1":"samba",
+	"package_2":"samba-common",
+	"package_3":"python-glade2",
+	"package_4":"system-config-samba",
+	"nfs_serv_package":"nfs-kernel-server",
+	"nfs_cli_package":"nfs-common",
+	"nfs_c...</msg>
+<status status="PASS" endtime="20190305 16:01:07.607" starttime="20190305 16:01:07.606"></status>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>json.loads('''${json}''')</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${obj}</var>
+</assign>
+<msg timestamp="20190305 16:01:07.608" level="INFO">${obj} = {u'package_4': u'system-config-samba', u'config_file': u'/etc/samba/smb.conf', u'package_1': u'samba', u'package_2': u'samba-common', u'package_3': u'python-glade2', u'nfs_serv_package': u'nfs-kernel-...</msg>
+<status status="PASS" endtime="20190305 16:01:07.608" starttime="20190305 16:01:07.607"></status>
+</kw>
+<msg timestamp="20190305 16:01:07.609" level="INFO">${file} = {u'package_4': u'system-config-samba', u'config_file': u'/etc/samba/smb.conf', u'package_1': u'samba', u'package_2': u'samba-common', u'package_3': u'python-glade2', u'nfs_serv_package': u'nfs-kernel-...</msg>
+<status status="PASS" endtime="20190305 16:01:07.609" starttime="20190305 16:01:07.605"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>mkdir ${file["dir_path"]}</arg>
+<arg>return_stdout=FALSE</arg>
+<arg>return_rc=True</arg>
+<arg>sudo=true</arg>
+<arg>sudo_password=root</arg>
+</arguments>
+<assign>
+<var>${create_dir}</var>
+</assign>
+<msg timestamp="20190305 16:01:07.611" level="INFO">Executing command 'sudo mkdir /backups/'.</msg>
+<msg timestamp="20190305 16:01:07.703" level="INFO">Command exited with return code 1.</msg>
+<msg timestamp="20190305 16:01:07.704" level="INFO">${create_dir} = 1</msg>
+<status status="PASS" endtime="20190305 16:01:07.704" starttime="20190305 16:01:07.610"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>"Directory was created successfully..."</arg>
+</arguments>
+<msg timestamp="20190305 16:01:07.705" level="INFO">"Directory was created successfully..."</msg>
+<status status="PASS" endtime="20190305 16:01:07.705" starttime="20190305 16:01:07.705"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>cp -rvf ${file["config_file"]} ${file["dir_path"]}</arg>
+<arg>sudo=true</arg>
+<arg>sudo_password=root</arg>
+</arguments>
+<assign>
+<var>${copy_file}</var>
+</assign>
+<msg timestamp="20190305 16:01:07.707" level="INFO">Executing command 'sudo cp -rvf /etc/samba/smb.conf /backups/'.</msg>
+<msg timestamp="20190305 16:01:07.787" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20190305 16:01:07.787" level="INFO">${copy_file} = '/etc/samba/smb.conf' -&gt; '/backups/smb.conf'</msg>
+<status status="PASS" endtime="20190305 16:01:07.787" starttime="20190305 16:01:07.706"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>"File copied successfully..."</arg>
+</arguments>
+<msg timestamp="20190305 16:01:07.788" level="INFO">"File copied successfully..."</msg>
+<status status="PASS" endtime="20190305 16:01:07.788" starttime="20190305 16:01:07.788"></status>
+</kw>
+<kw name="Get File" library="OperatingSystem">
+<doc>Returns the contents of a specified file.</doc>
+<arguments>
+<arg>/home/eeshwar/protocol_automation/protocols/cifs/server/../smb_content.txt</arg>
+</arguments>
+<assign>
+<var>${content}</var>
+</assign>
+<msg timestamp="20190305 16:01:07.790" html="yes" level="INFO">Getting file '&lt;a href="file:///home/eeshwar/protocol_automation/protocols/cifs/smb_content.txt"&gt;/home/eeshwar/protocol_automation/protocols/cifs/smb_content.txt&lt;/a&gt;'.</msg>
+<msg timestamp="20190305 16:01:07.791" level="INFO">${content} = 
+#========================== Global definition ==============================
+
+[global]
+workgroup = WORKGROUP
+server string = Samba Server %v
+security = user
+map to guest = bad user
+dns proxy = no
+
+#=...</msg>
+<status status="PASS" endtime="20190305 16:01:07.791" starttime="20190305 16:01:07.789"></status>
+</kw>
+<kw name="Split To Lines" library="String">
+<doc>Splits the given string to lines.</doc>
+<arguments>
+<arg>${content}</arg>
+</arguments>
+<assign>
+<var>@{lines}</var>
+</assign>
+<msg timestamp="20190305 16:01:07.793" level="INFO">41 lines returned</msg>
+<msg timestamp="20190305 16:01:07.793" level="INFO">@{lines} = [  | #========================== Global definition ============================== |  | [global] | workgroup = WORKGROUP | server string = Samba Server %v | security = user | map to guest = bad user | ...</msg>
+<status status="PASS" endtime="20190305 16:01:07.793" starttime="20190305 16:01:07.792"></status>
+</kw>
+<kw type="for" name="${line} IN [ @{lines} ]">
+<kw type="foritem" name="${line} = ">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:07.800" level="INFO">Executing command 'echo  &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:07.837" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:07.837" starttime="20190305 16:01:07.799"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:07.837" starttime="20190305 16:01:07.798"></status>
+</kw>
+<kw type="foritem" name="${line} = #========================== Global definition ==============================">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:07.839" level="INFO">Executing command 'echo #========================== Global definition ============================== &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:07.895" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:07.895" starttime="20190305 16:01:07.838"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:07.895" starttime="20190305 16:01:07.837"></status>
+</kw>
+<kw type="foritem" name="${line} = ">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:07.897" level="INFO">Executing command 'echo  &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:07.952" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:07.952" starttime="20190305 16:01:07.896"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:07.952" starttime="20190305 16:01:07.896"></status>
+</kw>
+<kw type="foritem" name="${line} = [global]">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:07.953" level="INFO">Executing command 'echo [global] &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.008" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.009" starttime="20190305 16:01:07.953"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.009" starttime="20190305 16:01:07.952"></status>
+</kw>
+<kw type="foritem" name="${line} = workgroup = WORKGROUP">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.010" level="INFO">Executing command 'echo workgroup = WORKGROUP &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.069" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.069" starttime="20190305 16:01:08.009"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.069" starttime="20190305 16:01:08.009"></status>
+</kw>
+<kw type="foritem" name="${line} = server string = Samba Server %v">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.071" level="INFO">Executing command 'echo server string = Samba Server %v &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.130" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.130" starttime="20190305 16:01:08.070"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.130" starttime="20190305 16:01:08.069"></status>
+</kw>
+<kw type="foritem" name="${line} = security = user">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.131" level="INFO">Executing command 'echo security = user &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.183" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.183" starttime="20190305 16:01:08.131"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.183" starttime="20190305 16:01:08.130"></status>
+</kw>
+<kw type="foritem" name="${line} = map to guest = bad user">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.185" level="INFO">Executing command 'echo map to guest = bad user &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.240" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.240" starttime="20190305 16:01:08.184"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.240" starttime="20190305 16:01:08.184"></status>
+</kw>
+<kw type="foritem" name="${line} = dns proxy = no">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.242" level="INFO">Executing command 'echo dns proxy = no &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.298" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.298" starttime="20190305 16:01:08.241"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.298" starttime="20190305 16:01:08.240"></status>
+</kw>
+<kw type="foritem" name="${line} = ">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.299" level="INFO">Executing command 'echo  &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.353" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.353" starttime="20190305 16:01:08.299"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.353" starttime="20190305 16:01:08.298"></status>
+</kw>
+<kw type="foritem" name="${line} = #============================ Share Definitions ============================= ">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.354" level="INFO">Executing command 'echo #============================ Share Definitions =============================  &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.411" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.412" starttime="20190305 16:01:08.353"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.412" starttime="20190305 16:01:08.353"></status>
+</kw>
+<kw type="foritem" name="${line} = ">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.413" level="INFO">Executing command 'echo  &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.464" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.464" starttime="20190305 16:01:08.412"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.464" starttime="20190305 16:01:08.412"></status>
+</kw>
+<kw type="foritem" name="${line} = [public]">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.466" level="INFO">Executing command 'echo [public] &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.521" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.521" starttime="20190305 16:01:08.465"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.521" starttime="20190305 16:01:08.464"></status>
+</kw>
+<kw type="foritem" name="${line} = path = /samba/public">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.522" level="INFO">Executing command 'echo path = /samba/public &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.578" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.579" starttime="20190305 16:01:08.522"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.579" starttime="20190305 16:01:08.521"></status>
+</kw>
+<kw type="foritem" name="${line} = browsable =yes">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.580" level="INFO">Executing command 'echo browsable =yes &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.637" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.637" starttime="20190305 16:01:08.579"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.637" starttime="20190305 16:01:08.579"></status>
+</kw>
+<kw type="foritem" name="${line} = writable = yes">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.638" level="INFO">Executing command 'echo writable = yes &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.694" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.695" starttime="20190305 16:01:08.638"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.695" starttime="20190305 16:01:08.637"></status>
+</kw>
+<kw type="foritem" name="${line} = guest ok = yes">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.696" level="INFO">Executing command 'echo guest ok = yes &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.757" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.757" starttime="20190305 16:01:08.695"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.757" starttime="20190305 16:01:08.695"></status>
+</kw>
+<kw type="foritem" name="${line} = read only = no">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.760" level="INFO">Executing command 'echo read only = no &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.813" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.813" starttime="20190305 16:01:08.759"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.814" starttime="20190305 16:01:08.759"></status>
+</kw>
+<kw type="foritem" name="${line} = create mode = 0777">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.815" level="INFO">Executing command 'echo create mode = 0777 &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.870" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.870" starttime="20190305 16:01:08.814"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.870" starttime="20190305 16:01:08.814"></status>
+</kw>
+<kw type="foritem" name="${line} = directory mode = 0777">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.871" level="INFO">Executing command 'echo directory mode = 0777 &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.930" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.930" starttime="20190305 16:01:08.871"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.930" starttime="20190305 16:01:08.870"></status>
+</kw>
+<kw type="foritem" name="${line} = force user = nobody">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.932" level="INFO">Executing command 'echo force user = nobody &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:08.988" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:08.988" starttime="20190305 16:01:08.931"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:08.988" starttime="20190305 16:01:08.930"></status>
+</kw>
+<kw type="foritem" name="${line} = ">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:08.990" level="INFO">Executing command 'echo  &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.050" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.050" starttime="20190305 16:01:08.989"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.050" starttime="20190305 16:01:08.989"></status>
+</kw>
+<kw type="foritem" name="${line} = #========================= Private Share ===================================">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.051" level="INFO">Executing command 'echo #========================= Private Share =================================== &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.108" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.109" starttime="20190305 16:01:09.051"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.109" starttime="20190305 16:01:09.050"></status>
+</kw>
+<kw type="foritem" name="${line} = [private]">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.110" level="INFO">Executing command 'echo [private] &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.168" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.168" starttime="20190305 16:01:09.109"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.168" starttime="20190305 16:01:09.109"></status>
+</kw>
+<kw type="foritem" name="${line} = path = /samba/private">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.170" level="INFO">Executing command 'echo path = /samba/private &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.229" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.229" starttime="20190305 16:01:09.169"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.229" starttime="20190305 16:01:09.169"></status>
+</kw>
+<kw type="foritem" name="${line} = valid user = @smbgrp">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.230" level="INFO">Executing command 'echo valid user = @smbgrp &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.283" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.283" starttime="20190305 16:01:09.230"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.283" starttime="20190305 16:01:09.229"></status>
+</kw>
+<kw type="foritem" name="${line} = guest ok = no">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.284" level="INFO">Executing command 'echo guest ok = no &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.335" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.336" starttime="20190305 16:01:09.284"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.336" starttime="20190305 16:01:09.283"></status>
+</kw>
+<kw type="foritem" name="${line} = writable = yes">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.337" level="INFO">Executing command 'echo writable = yes &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.392" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.392" starttime="20190305 16:01:09.336"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.392" starttime="20190305 16:01:09.336"></status>
+</kw>
+<kw type="foritem" name="${line} = browsable = yes">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.394" level="INFO">Executing command 'echo browsable = yes &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.449" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.449" starttime="20190305 16:01:09.393"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.449" starttime="20190305 16:01:09.393"></status>
+</kw>
+<kw type="foritem" name="${line} = ">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.450" level="INFO">Executing command 'echo  &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.505" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.505" starttime="20190305 16:01:09.450"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.506" starttime="20190305 16:01:09.449"></status>
+</kw>
+<kw type="foritem" name="${line} = #========================= Readonly Share ==================================">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.507" level="INFO">Executing command 'echo #========================= Readonly Share ================================== &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.562" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.562" starttime="20190305 16:01:09.506"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.562" starttime="20190305 16:01:09.506"></status>
+</kw>
+<kw type="foritem" name="${line} = ">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.564" level="INFO">Executing command 'echo  &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.615" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.615" starttime="20190305 16:01:09.563"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.616" starttime="20190305 16:01:09.562"></status>
+</kw>
+<kw type="foritem" name="${line} = [Readonly]">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.617" level="INFO">Executing command 'echo [Readonly] &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.670" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.670" starttime="20190305 16:01:09.616"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.670" starttime="20190305 16:01:09.616"></status>
+</kw>
+<kw type="foritem" name="${line} = comment = Readonly access">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.671" level="INFO">Executing command 'echo comment = Readonly access &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.726" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.726" starttime="20190305 16:01:09.670"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.726" starttime="20190305 16:01:09.670"></status>
+</kw>
+<kw type="foritem" name="${line} = path = /samba/Readonly">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.727" level="INFO">Executing command 'echo path = /samba/Readonly &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.778" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.779" starttime="20190305 16:01:09.726"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.779" starttime="20190305 16:01:09.726"></status>
+</kw>
+<kw type="foritem" name="${line} = browsable =no">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.780" level="INFO">Executing command 'echo browsable =no &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.846" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.847" starttime="20190305 16:01:09.779"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.847" starttime="20190305 16:01:09.779"></status>
+</kw>
+<kw type="foritem" name="${line} = create mask = 0550">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.848" level="INFO">Executing command 'echo create mask = 0550 &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.905" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.905" starttime="20190305 16:01:09.847"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.905" starttime="20190305 16:01:09.847"></status>
+</kw>
+<kw type="foritem" name="${line} = directory mask = 0550">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.907" level="INFO">Executing command 'echo directory mask = 0550 &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:09.960" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:09.961" starttime="20190305 16:01:09.906"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:09.961" starttime="20190305 16:01:09.906"></status>
+</kw>
+<kw type="foritem" name="${line} = read only = yes">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:09.962" level="INFO">Executing command 'echo read only = yes &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:10.016" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:10.017" starttime="20190305 16:01:09.961"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:10.017" starttime="20190305 16:01:09.961"></status>
+</kw>
+<kw type="foritem" name="${line} = guest ok = no">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:10.018" level="INFO">Executing command 'echo guest ok = no &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:10.074" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:10.074" starttime="20190305 16:01:10.017"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:10.074" starttime="20190305 16:01:10.017"></status>
+</kw>
+<kw type="foritem" name="${line} = ">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo ${line} &gt;&gt; ${file["config_file"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:10.075" level="INFO">Executing command 'echo  &gt;&gt; /etc/samba/smb.conf'.</msg>
+<msg timestamp="20190305 16:01:10.132" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:10.132" starttime="20190305 16:01:10.075"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:10.132" starttime="20190305 16:01:10.074"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:10.132" starttime="20190305 16:01:07.798"></status>
+</kw>
+<doc>Edit Config File</doc>
+<status status="PASS" endtime="20190305 16:01:10.133" critical="yes" starttime="20190305 16:01:07.603"></status>
+</test>
+<test id="s1-t3" name="03_Restart Service">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>systemctl restart smbd</arg>
+</arguments>
+<msg timestamp="20190305 16:01:10.137" level="INFO">Executing command 'systemctl restart smbd'.</msg>
+<msg timestamp="20190305 16:01:10.978" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:10.978" starttime="20190305 16:01:10.136"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>"Service restart successfully..."</arg>
+</arguments>
+<msg timestamp="20190305 16:01:10.979" level="INFO">"Service restart successfully..."</msg>
+<status status="PASS" endtime="20190305 16:01:10.980" starttime="20190305 16:01:10.979"></status>
+</kw>
+<doc>Restart service</doc>
+<status status="PASS" endtime="20190305 16:01:10.980" critical="yes" starttime="20190305 16:01:10.135"></status>
+</test>
+<test id="s1-t4" name="04_Run robot file">
+<kw name="Run" library="OperatingSystem">
+<doc>Runs the given command in the system and returns the output.</doc>
+<arguments>
+<arg>robot --timestampoutputs --log shares.html --report NONE /home/eeshwar/protocol_automation/protocols/cifs/server/../../common/shares.robot</arg>
+</arguments>
+<msg timestamp="20190305 16:01:10.995" level="INFO">Running command 'robot --timestampoutputs --log shares.html --report NONE /home/eeshwar/protocol_automation/protocols/cifs/server/../../common/shares.robot 2&gt;&amp;1'.</msg>
+<status status="PASS" endtime="20190305 16:01:11.398" starttime="20190305 16:01:10.985"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>"Shares created successfully..."</arg>
+</arguments>
+<msg timestamp="20190305 16:01:11.399" level="INFO">"Shares created successfully..."</msg>
+<status status="PASS" endtime="20190305 16:01:11.399" starttime="20190305 16:01:11.398"></status>
+</kw>
+<doc>Run Shares program</doc>
+<status status="PASS" endtime="20190305 16:01:11.399" critical="yes" starttime="20190305 16:01:10.982"></status>
+</test>
+<test id="s1-t5" name="05_Give Permission to Share">
+<kw name="Json_file">
+<assign>
+<var>${share}</var>
+</assign>
+<kw name="Get File" library="OperatingSystem">
+<doc>Returns the contents of a specified file.</doc>
+<arguments>
+<arg>/home/eeshwar/protocol_automation/protocols/cifs/server/../../config/config.json</arg>
+</arguments>
+<assign>
+<var>${json}</var>
+</assign>
+<msg timestamp="20190305 16:01:11.402" html="yes" level="INFO">Getting file '&lt;a href="file:///home/eeshwar/protocol_automation/protocols/config/config.json"&gt;/home/eeshwar/protocol_automation/protocols/config/config.json&lt;/a&gt;'.</msg>
+<msg timestamp="20190305 16:01:11.402" level="INFO">${json} = {
+	"package_1":"samba",
+	"package_2":"samba-common",
+	"package_3":"python-glade2",
+	"package_4":"system-config-samba",
+	"nfs_serv_package":"nfs-kernel-server",
+	"nfs_cli_package":"nfs-common",
+	"nfs_c...</msg>
+<status status="PASS" endtime="20190305 16:01:11.402" starttime="20190305 16:01:11.401"></status>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>json.loads('''${json}''')</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${obj}</var>
+</assign>
+<msg timestamp="20190305 16:01:11.403" level="INFO">${obj} = {u'package_4': u'system-config-samba', u'config_file': u'/etc/samba/smb.conf', u'package_1': u'samba', u'package_2': u'samba-common', u'package_3': u'python-glade2', u'nfs_serv_package': u'nfs-kernel-...</msg>
+<status status="PASS" endtime="20190305 16:01:11.403" starttime="20190305 16:01:11.402"></status>
+</kw>
+<msg timestamp="20190305 16:01:11.403" level="INFO">${share} = {u'package_4': u'system-config-samba', u'config_file': u'/etc/samba/smb.conf', u'package_1': u'samba', u'package_2': u'samba-common', u'package_3': u'python-glade2', u'nfs_serv_package': u'nfs-kernel-...</msg>
+<status status="PASS" endtime="20190305 16:01:11.403" starttime="20190305 16:01:11.401"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>addgroup smbgrp</arg>
+</arguments>
+<msg timestamp="20190305 16:01:11.404" level="INFO">Executing command 'addgroup smbgrp'.</msg>
+<msg timestamp="20190305 16:01:11.498" level="INFO">Command exited with return code 1.</msg>
+<status status="PASS" endtime="20190305 16:01:11.499" starttime="20190305 16:01:11.403"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>useradd samba -G smbgrp</arg>
+</arguments>
+<msg timestamp="20190305 16:01:11.500" level="INFO">Executing command 'useradd samba -G smbgrp'.</msg>
+<msg timestamp="20190305 16:01:11.603" level="INFO">Command exited with return code 9.</msg>
+<status status="PASS" endtime="20190305 16:01:11.604" starttime="20190305 16:01:11.499"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo -e "root\nroot"|smbpasswd -a samba</arg>
+</arguments>
+<msg timestamp="20190305 16:01:11.605" level="INFO">Executing command 'echo -e "root
+root"|smbpasswd -a samba'.</msg>
+<msg timestamp="20190305 16:01:11.763" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:11.763" starttime="20190305 16:01:11.604"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>chmod 0770 ${share["private"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:11.765" level="INFO">Executing command 'chmod 0770 /common/private/'.</msg>
+<msg timestamp="20190305 16:01:11.820" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:11.820" starttime="20190305 16:01:11.764"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>chown root:smbgrp ${share["private"]}</arg>
+</arguments>
+<msg timestamp="20190305 16:01:11.821" level="INFO">Executing command 'chown root:smbgrp /common/private/'.</msg>
+<msg timestamp="20190305 16:01:11.873" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190305 16:01:11.873" starttime="20190305 16:01:11.820"></status>
+</kw>
+<doc>User permission to private share</doc>
+<status status="PASS" endtime="20190305 16:01:11.873" critical="yes" starttime="20190305 16:01:11.400"></status>
+</test>
+<test id="s1-t6" name="06_Call Client">
+<kw name="Run" library="OperatingSystem">
+<doc>Runs the given command in the system and returns the output.</doc>
+<arguments>
+<arg>robot --timestampoutputs --log client.html --report NONE /home/eeshwar/protocol_automation/protocols/cifs/server/../client/protocol_clients.robot</arg>
+</arguments>
+<msg timestamp="20190305 16:01:11.876" level="INFO">Running command 'robot --timestampoutputs --log client.html --report NONE /home/eeshwar/protocol_automation/protocols/cifs/server/../client/protocol_clients.robot 2&gt;&amp;1'.</msg>
+<status status="PASS" endtime="20190305 16:01:12.155" starttime="20190305 16:01:11.875"></status>
+</kw>
+<doc>Run cifs Protocol Client</doc>
+<status status="PASS" endtime="20190305 16:01:12.155" critical="yes" starttime="20190305 16:01:11.874"></status>
+</test>
+<kw type="teardown" name="Close All Connections" library="SSHLibrary">
+<doc>Closes all open connections.</doc>
+<status status="PASS" endtime="20190305 16:01:12.163" starttime="20190305 16:01:12.157"></status>
+</kw>
+<status status="PASS" endtime="20190305 16:01:12.163" starttime="20190305 16:01:04.238"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="0" pass="6">Critical Tests</stat>
+<stat fail="0" pass="6">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="0" id="s1" name="Protocol Servers" pass="6">Protocol Servers</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot rpa="false" generated="20190221 14:42:01.933" generator="Robot 3.1.1 (Python 2.7.15rc1 on linux2)">
+<suite source="/home/ganesh/saranya/protocol_automation/protocols/sftp/server/protocol_servers.robot" id="s1" name="Protocol Servers">
+<kw type="setup" name="Open Connection And Log In">
+<kw name="Get Environment Variable" library="OperatingSystem">
+<doc>Returns the value of an environment variable with the given name.</doc>
+<arguments>
+<arg>SERVER_IP</arg>
+</arguments>
+<assign>
+<var>${ip}</var>
+</assign>
+<msg timestamp="20190221 14:42:02.098" level="INFO">${ip} = 10.132.243.132</msg>
+<status status="PASS" endtime="20190221 14:42:02.098" starttime="20190221 14:42:02.098"></status>
+</kw>
+<kw name="Get Environment Variable" library="OperatingSystem">
+<doc>Returns the value of an environment variable with the given name.</doc>
+<arguments>
+<arg>SERVER_NAME</arg>
+</arguments>
+<assign>
+<var>${name}</var>
+</assign>
+<msg timestamp="20190221 14:42:02.099" level="INFO">${name} = root</msg>
+<status status="PASS" endtime="20190221 14:42:02.099" starttime="20190221 14:42:02.099"></status>
+</kw>
+<kw name="Get Environment Variable" library="OperatingSystem">
+<doc>Returns the value of an environment variable with the given name.</doc>
+<arguments>
+<arg>SERVER_PWD</arg>
+</arguments>
+<assign>
+<var>${pwd}</var>
+</assign>
+<msg timestamp="20190221 14:42:02.100" level="INFO">${pwd} = root</msg>
+<status status="PASS" endtime="20190221 14:42:02.100" starttime="20190221 14:42:02.099"></status>
+</kw>
+<kw name="Open Connection" library="SSHLibrary">
+<doc>Opens a new SSH connection to the given ``host`` and ``port``.</doc>
+<arguments>
+<arg>${ip}</arg>
+</arguments>
+<status status="PASS" endtime="20190221 14:42:02.101" starttime="20190221 14:42:02.100"></status>
+</kw>
+<kw name="Login" library="SSHLibrary">
+<doc>Logs into the SSH server with the given ``username`` and ``password``.</doc>
+<arguments>
+<arg>${name}</arg>
+<arg>${pwd}</arg>
+</arguments>
+<msg timestamp="20190221 14:42:02.101" level="INFO">Logging into '10.132.243.132:22' as 'root'.</msg>
+<msg timestamp="20190221 14:42:03.668" level="INFO">Read output: Welcome to Ubuntu 18.04 LTS (GNU/Linux 4.15.0-20-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+
+ * Canonical Livepatch is available for installation.
+   - Reduce system reboots and improve kernel security. Activate at:
+     https://ubuntu.com/livepatch
+
+526 packages can be updated.
+217 updates are security updates.
+
+Last login: Thu Feb 21 14:41:08 2019 from 10.132.242.64
+root@server-virtual-machine:~#</msg>
+<status status="PASS" endtime="20190221 14:42:03.668" starttime="20190221 14:42:02.101"></status>
+</kw>
+<status status="PASS" endtime="20190221 14:42:03.668" starttime="20190221 14:42:02.097"></status>
+</kw>
+<test id="s1-t1" name="01_Install Packages">
+<kw name="Packages">
+<assign>
+<var>${pack}</var>
+</assign>
+<kw name="Get File" library="OperatingSystem">
+<doc>Returns the contents of a specified file.</doc>
+<arguments>
+<arg>/home/ganesh/saranya/protocol_automation/protocols/sftp/server/../../config/config.json</arg>
+</arguments>
+<assign>
+<var>${json}</var>
+</assign>
+<msg timestamp="20190221 14:42:03.671" html="yes" level="INFO">Getting file '&lt;a href="file:///home/ganesh/saranya/protocol_automation/protocols/config/config.json"&gt;/home/ganesh/saranya/protocol_automation/protocols/config/config.json&lt;/a&gt;'.</msg>
+<msg timestamp="20190221 14:42:03.671" level="INFO">${json} = {
+	"package_1":"samba",
+	"package_2":"samba-common",
+	"package_3":"python-glade2",
+	"package_4":"system-config-samba",
+	"client_pack":"cifs-utils",
+	"dir_path":"/backups/",
+	"config_file":"/etc/samba/...</msg>
+<status status="PASS" endtime="20190221 14:42:03.671" starttime="20190221 14:42:03.670"></status>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>json.loads('''${json}''')</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${obj}</var>
+</assign>
+<msg timestamp="20190221 14:42:03.675" level="INFO">${obj} = {u'package_4': u'system-config-samba', u'SFTP_ServerPackage': u'ssh', u'config_file': u'/etc/samba/smb.conf', u'package_1': u'samba', u'package_2': u'samba-common', u'package_3': u'python-glade2', u'p...</msg>
+<status status="PASS" endtime="20190221 14:42:03.675" starttime="20190221 14:42:03.672"></status>
+</kw>
+<msg timestamp="20190221 14:42:03.676" level="INFO">${pack} = {u'package_4': u'system-config-samba', u'SFTP_ServerPackage': u'ssh', u'config_file': u'/etc/samba/smb.conf', u'package_1': u'samba', u'package_2': u'samba-common', u'package_3': u'python-glade2', u'p...</msg>
+<status status="PASS" endtime="20190221 14:42:03.676" starttime="20190221 14:42:03.670"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>apt install -y ${pack["SFTP_ServerPackage"]}</arg>
+<arg>sudo=true</arg>
+<arg>sudo_password=root</arg>
+</arguments>
+<assign>
+<var>${package}</var>
+</assign>
+<msg timestamp="20190221 14:42:03.677" level="INFO">Executing command 'sudo apt install -y ssh'.</msg>
+<msg timestamp="20190221 14:42:04.604" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20190221 14:42:04.604" level="INFO">${package} = Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building ...</msg>
+<status status="PASS" endtime="20190221 14:42:04.604" starttime="20190221 14:42:03.676"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${package}</arg>
+</arguments>
+<msg timestamp="20190221 14:42:04.605" level="INFO">Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+Reading state information... 0%Reading state information... 2%Reading state information... Done
+ssh is already the newest version (1:7.6p1-4ubuntu0.2).
+0 upgraded, 0 newly installed, 0 to remove and 516 not upgraded.</msg>
+<status status="PASS" endtime="20190221 14:42:04.605" starttime="20190221 14:42:04.605"></status>
+</kw>
+<doc>Install samba PackagesI</doc>
+<status status="PASS" endtime="20190221 14:42:04.606" critical="yes" starttime="20190221 14:42:03.669"></status>
+</test>
+<test id="s1-t2" name="02_SFTP user create">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>useradd -m sftp</arg>
+</arguments>
+<msg timestamp="20190221 14:42:04.608" level="INFO">Executing command 'useradd -m sftp'.</msg>
+<msg timestamp="20190221 14:42:04.684" level="INFO">Command exited with return code 9.</msg>
+<status status="PASS" endtime="20190221 14:42:04.684" starttime="20190221 14:42:04.608"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo "sftp:sftp"|chpasswd</arg>
+</arguments>
+<msg timestamp="20190221 14:42:04.685" level="INFO">Executing command 'echo "sftp:sftp"|chpasswd'.</msg>
+<msg timestamp="20190221 14:42:04.802" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190221 14:42:04.802" starttime="20190221 14:42:04.685"></status>
+</kw>
+<doc>Create an user for SFTP</doc>
+<status status="PASS" endtime="20190221 14:42:04.802" critical="yes" starttime="20190221 14:42:04.607"></status>
+</test>
+<test id="s1-t3" name="03_Run robot file">
+<kw name="Run" library="OperatingSystem">
+<doc>Runs the given command in the system and returns the output.</doc>
+<arguments>
+<arg>robot /home/ganesh/saranya/protocol_automation/protocols/sftp/server/../../common/shares.robot</arg>
+</arguments>
+<msg timestamp="20190221 14:42:04.806" level="INFO">Running command 'robot /home/ganesh/saranya/protocol_automation/protocols/sftp/server/../../common/shares.robot 2&gt;&amp;1'.</msg>
+<status status="PASS" endtime="20190221 14:42:07.300" starttime="20190221 14:42:04.804"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>"Shares created successfully..."</arg>
+</arguments>
+<msg timestamp="20190221 14:42:07.302" level="INFO">"Shares created successfully..."</msg>
+<status status="PASS" endtime="20190221 14:42:07.302" starttime="20190221 14:42:07.301"></status>
+</kw>
+<doc>Run Shares program</doc>
+<status status="PASS" endtime="20190221 14:42:07.302" critical="yes" starttime="20190221 14:42:04.803"></status>
+</test>
+<test id="s1-t4" name="04_Give SFTP user Permission to a Share">
+<kw name="Json_file">
+<assign>
+<var>${share_private}</var>
+</assign>
+<kw name="Get File" library="OperatingSystem">
+<doc>Returns the contents of a specified file.</doc>
+<arguments>
+<arg>/home/ganesh/saranya/protocol_automation/protocols/sftp/server/../../config/config.json</arg>
+</arguments>
+<assign>
+<var>${json}</var>
+</assign>
+<msg timestamp="20190221 14:42:07.306" html="yes" level="INFO">Getting file '&lt;a href="file:///home/ganesh/saranya/protocol_automation/protocols/config/config.json"&gt;/home/ganesh/saranya/protocol_automation/protocols/config/config.json&lt;/a&gt;'.</msg>
+<msg timestamp="20190221 14:42:07.306" level="INFO">${json} = {
+	"package_1":"samba",
+	"package_2":"samba-common",
+	"package_3":"python-glade2",
+	"package_4":"system-config-samba",
+	"client_pack":"cifs-utils",
+	"dir_path":"/backups/",
+	"config_file":"/etc/samba/...</msg>
+<status status="PASS" endtime="20190221 14:42:07.306" starttime="20190221 14:42:07.305"></status>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>json.loads('''${json}''')</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${obj}</var>
+</assign>
+<msg timestamp="20190221 14:42:07.307" level="INFO">${obj} = {u'package_4': u'system-config-samba', u'SFTP_ServerPackage': u'ssh', u'config_file': u'/etc/samba/smb.conf', u'package_1': u'samba', u'package_2': u'samba-common', u'package_3': u'python-glade2', u'p...</msg>
+<status status="PASS" endtime="20190221 14:42:07.307" starttime="20190221 14:42:07.306"></status>
+</kw>
+<msg timestamp="20190221 14:42:07.308" level="INFO">${share_private} = {u'package_4': u'system-config-samba', u'SFTP_ServerPackage': u'ssh', u'config_file': u'/etc/samba/smb.conf', u'package_1': u'samba', u'package_2': u'samba-common', u'package_3': u'python-glade2', u'p...</msg>
+<status status="PASS" endtime="20190221 14:42:07.308" starttime="20190221 14:42:07.305"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>chown sftp ${share_private["private"]}</arg>
+<arg>sudo=true</arg>
+<arg>sudo_password=root</arg>
+</arguments>
+<msg timestamp="20190221 14:42:07.309" level="INFO">Executing command 'sudo chown sftp /private'.</msg>
+<msg timestamp="20190221 14:42:07.345" level="INFO">Command exited with return code 0.</msg>
+<status status="PASS" endtime="20190221 14:42:07.345" starttime="20190221 14:42:07.308"></status>
+</kw>
+<doc>User permission to private share</doc>
+<status status="PASS" endtime="20190221 14:42:07.345" critical="yes" starttime="20190221 14:42:07.303"></status>
+</test>
+<test id="s1-t5" name="05_Call Client">
+<kw name="Run" library="OperatingSystem">
+<doc>Runs the given command in the system and returns the output.</doc>
+<arguments>
+<arg>robot /home/ganesh/saranya/protocol_automation/protocols/sftp/server/../client/protocol_clients.robot</arg>
+</arguments>
+<msg timestamp="20190221 14:42:07.349" level="INFO">Running command 'robot /home/ganesh/saranya/protocol_automation/protocols/sftp/server/../client/protocol_clients.robot 2&gt;&amp;1'.</msg>
+<status status="PASS" endtime="20190221 14:42:11.193" starttime="20190221 14:42:07.347"></status>
+</kw>
+<doc>Run cifs Protocol Client</doc>
+<status status="PASS" endtime="20190221 14:42:11.194" critical="yes" starttime="20190221 14:42:07.346"></status>
+</test>
+<kw type="teardown" name="Close All Connections" library="SSHLibrary">
+<doc>Closes all open connections.</doc>
+<status status="PASS" endtime="20190221 14:42:11.202" starttime="20190221 14:42:11.197"></status>
+</kw>
+<status status="PASS" endtime="20190221 14:42:11.202" starttime="20190221 14:42:01.935"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="0" pass="5">Critical Tests</stat>
+<stat fail="0" pass="5">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="0" id="s1" name="Protocol Servers" pass="5">Protocol Servers</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

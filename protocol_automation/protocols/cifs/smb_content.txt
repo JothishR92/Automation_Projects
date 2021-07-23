@@ -1,0 +1,41 @@
+
+#========================== Global definition ==============================
+
+[global]
+workgroup = WORKGROUP
+server string = Samba Server %v
+security = user
+map to guest = bad user
+dns proxy = no
+
+#============================ Share Definitions ============================= 
+
+[public]
+path = /samba/public
+browsable =yes
+writable = yes
+guest ok = yes
+read only = no
+create mode = 0777
+directory mode = 0777
+force user = nobody
+
+#========================= Private Share ===================================
+[private]
+path = /samba/private
+valid user = @smbgrp
+guest ok = no
+writable = yes
+browsable = yes
+
+#========================= Readonly Share ==================================
+
+[Readonly]
+comment = Readonly access
+path = /samba/Readonly
+browsable =no
+create mask = 0550
+directory mask = 0550
+read only = yes
+guest ok = no
+
