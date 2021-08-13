@@ -1,0 +1,7 @@
+what is the value of 5+5?
+what is the value of 10-12?
+what is the value of 200-500?
+what is the value of 200/20?
+what is the value of 200*200?
+What is the value of 10+10?
+What is the value of 20*20?
